@@ -1,5 +1,10 @@
-node_modules
-dist
-*.log
+node_modules/
+.next/
+out/
+next-env.d.ts
 *.tsbuildinfo
-footage
+.env
+.env.local
+.env.*.local
+!.env.example
+.vercel

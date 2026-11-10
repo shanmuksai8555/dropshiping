@@ -1,11 +1,12 @@
 # Lumen Market — scroll-scrubbed homepage ("Ora"-style)
 
 An original homepage for the Lumen Market dropshipping store (placeholder name). A 240-frame WebP
-sequence of a concept smartwatch is scrubbed on a `<canvas>` as you scroll: it turns, comes apart
-chapter by chapter, then settles back into a hero pose. A real-progress preloader sits in front.
+sequence is scrubbed on a `<canvas>` as you scroll: four short, photoreal product films, one per
+store category (Fashion, Electronics, Kitchenware, Daily Essentials), with a brief crossfade
+between chapters. A real-progress preloader sits in front.
 
 Inspired by the public one-line description of Scrolltide's "Ora" template. No Scrolltide code,
-prompt or assets are used; the frames are rendered by our own script.
+prompt or assets are used.
 
 **No animation library.** All motion is native scroll + `requestAnimationFrame` + canvas `drawImage`.
 Runtime dependencies are only `react` and `react-dom`.
@@ -27,31 +28,37 @@ Deploy: `.github/workflows/pages.yml` builds and deploys on every push to `main`
 
 ## Frames
 
+`public/frames/0001.webp` … `0240.webp` — 1600×1000 WebP, about 10 MB in total. Each chapter is 60
+frames taken from a 6-second, 1080p clip, with an 8-frame crossfade at each join.
+
+The clips were generated with Grok Imagine: a still of each product (`GenerateImage`) was animated
+(`GenerateVideo`, image-to-video) as a slow studio camera move / short turntable. Products are
+generic, with no brand names, logos or typography. A previous procedural three.js watch sequence
+is no longer used.
+
+| frames  | chapter           | film                                              |
+|---------|-------------------|---------------------------------------------------|
+| 1–60    | Fashion           | Cognac leather tote, slow turn                    |
+| 61–120  | Electronics       | Matte black over-ear headphones, slow orbit       |
+| 121–180 | Kitchenware       | Hammered copper saucepan, slow arc                |
+| 181–240 | Daily Essentials  | Glass bottle, amber pump and ceramic jar, push-in |
+
+To rebuild the WebPs from local clips in `footage/` (gitignored):
+
 ```bash
-npm run render:frames            # all 240 → public/frames/0001.webp … 0240.webp (~2 min)
-node scripts/render-frames.mjs --only=0,120,239 --out=/tmp/preview   # quick look at a few
-npm run contact-sheet -- sheet.png                                   # every 20th frame in a grid
+node scripts/extract-live-frames.mjs    # 240 frames, cover-cropped, vignette, crossfades
+npm run contact-sheet -- sheet.png      # every 20th frame in a grid
 ```
 
-`scripts/render/scene.js` builds the watch from procedural three.js geometry (case, crown, glass,
-display, logic board, battery, back cover, two straps) and animates it per frame:
-
-| frames  | what happens                                    |
-|---------|-------------------------------------------------|
-| 1–60    | assembled, slow turn                            |
-| 61–180  | straps detach (±Y), glass + display lift (+Z), board + battery drop back (−Z), back cover and crown leave |
-| 181–240 | everything reassembles and settles into the hero pose |
-
-`scripts/render-frames.mjs` serves the scene locally, renders it in headless Chrome
-(`puppeteer-core`, SwiftShader), adds an edge vignette so frames fade to `#060608`, and encodes WebP
-with `sharp` (q78). 1600×1000, ~17 KB average, ~4 MB total. `three`, `puppeteer-core` and `sharp` are
-devDependencies used only by this script; none of them is imported by the site.
+`scripts/render-frames.mjs` and `scripts/render/scene.js` are a **legacy** path that rendered the
+old procedural watch in headless Chrome. They are kept for reference and are not used to produce
+the current frames. `three` remains a devDependency only for that legacy script.
 
 ## Loading strategy
 
 * Frame 1 is `<link rel=preload>`ed.
 * The preloader waits for a **gate set**: frame 1, every 4th frame and the hero frame (61 frames,
-  about 1 MB). Its percentage is the real count of gate frames that finished downloading **and**
+  about 2.5 MB). Its percentage is the real count of gate frames that finished downloading **and**
   decoding (`img.decode()`).
 * At 100% it fades out; the other 179 frames stream in at low concurrency. Until a frame arrives the
   canvas draws the nearest decoded one, so scrubbing works straight away and just gets smoother.
@@ -61,7 +68,7 @@ devDependencies used only by this script; none of them is imported by the site.
   ~1.5 GB; the browser can evict and re-decode image data under memory pressure.
 * Redraws are rAF-throttled and only happen when the frame index (or the nearest available image)
   changes. Canvas is DPR-aware (capped at 2×). Landscape uses cover-fit; tall portrait screens scale
-  so the central ~860 px of the frame (the exploded product) is never cropped, and the letterbox is
+  so the central ~860 px of the frame (the product) is never cropped, and the letterbox is
   feathered into the background colour.
 * `prefers-reduced-motion: reduce` → no preloader, no scrub: one static hero frame plus the four
   chapters stacked as normal content.
@@ -76,7 +83,8 @@ devDependencies used only by this script; none of them is imported by the site.
 ## What is placeholder
 
 * **"Lumen Market"** is a placeholder brand name.
-* **"Lumen One"** is an illustrative concept render, not a real or listed product; the page says so.
+* **Product films** on the homepage are illustrative studio shots, not listed items; the page says
+  “Imagery is illustrative”.
 * **WhatsApp VIP form** validates an Indian mobile (+91 optional) and shows a thank-you, but sends and
   stores nothing. See `TODO(lead-capture)` in `src/components/JoinForm.tsx` (POST `/api/lead` →
   Google Sheets).

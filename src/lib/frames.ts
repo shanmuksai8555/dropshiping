@@ -12,7 +12,7 @@
 export const FRAME_COUNT = 240;
 export const FRAME_W = 1600;
 export const FRAME_H = 1000;
-export const HERO_FRAME = 239; // index of the settled hero pose
+export const HERO_FRAME = 0; // first chapter (fashion tote); also the preloaded frame
 
 export const frameUrl = (i: number) =>
   `${import.meta.env.BASE_URL}frames/${String(i + 1).padStart(4, '0')}.webp`;

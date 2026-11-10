@@ -1,13 +1,13 @@
 // All homepage copy lives here. Nothing in this file is a business fact: no prices, ratings,
-// order counts or delivery promises. The watch is an illustrative concept render, not a product.
+// order counts or delivery promises. The product images are illustrative, not listed items.
 
 export type Chapter = { n: string; title: string; body: string; from: number; to: number };
 
 export const CHAPTERS: Chapter[] = [
-  { n: '01', title: 'Built to last', body: 'One case, milled to a single idea. Fewer seams. Fewer excuses.', from: 22, to: 60 },
-  { n: '02', title: 'Comfort', body: 'A soft band that stays out of the way. That is the whole job.', from: 66, to: 106 },
-  { n: '03', title: 'Inside', body: 'Glass, display, board, battery. Everything has a place, and stays in it.', from: 112, to: 178 },
-  { n: '04', title: 'Ready to ship', body: 'Put back together and handed to our fulfilment partner. Then it is on its way to you.', from: 190, to: 239 },
+  { n: '01', title: 'Fashion', body: 'Cut and stitched. Meant to be worn often.', from: 18, to: 52 },
+  { n: '02', title: 'Electronics', body: 'Quiet objects. They do the work.', from: 68, to: 112 },
+  { n: '03', title: 'Kitchenware', body: 'For the counter, not the cupboard.', from: 128, to: 172 },
+  { n: '04', title: 'Daily Essentials', body: 'The ordinary things, done properly.', from: 188, to: 239 },
 ];
 
 export const CATEGORIES = [

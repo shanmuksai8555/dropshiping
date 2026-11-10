@@ -66,7 +66,7 @@ export function Footer() {
         </nav>
       </div>
       <p className="footer__small">
-        © {new Date().getFullYear()} Lumen Market (placeholder name). Product renders on this page are illustrative concepts, not listed items.
+        © {new Date().getFullYear()} Lumen Market (placeholder name). Imagery is illustrative; none of these are listed items.
       </p>
     </footer>
   );

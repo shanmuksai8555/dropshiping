@@ -45,7 +45,7 @@ export default function ScrubHero({ store, active }: Props) {
       const cw = canvas.width, ch = canvas.height;
       const cover = Math.max(cw / FRAME_W, ch / FRAME_H);
       const contain = Math.min(cw / FRAME_W, ch / FRAME_H);
-      // Cover-fit, but never crop the central ~860px of the frame (the exploded product) on tall
+      // Cover-fit, but never crop the central ~860px of the frame (the product) on tall
       // portrait screens; the frames fade to #060608 at the edges so letterboxing is seamless.
       const scale = Math.min(cover, Math.max(contain, cw / 860));
       const dw = FRAME_W * scale, dh = FRAME_H * scale;
@@ -129,7 +129,7 @@ export default function ScrubHero({ store, active }: Props) {
   }, [active]);
 
   return (
-    <section className="scrub" ref={sectionRef} aria-label="Lumen One, taken apart">
+    <section className="scrub" ref={sectionRef} aria-label="Product films, four categories">
       <div className="scrub__stage">
         <canvas className="scrub__canvas" ref={canvasRef} aria-hidden="true" />
         <div className="scrub__shade" aria-hidden="true" />
@@ -137,7 +137,7 @@ export default function ScrubHero({ store, active }: Props) {
         <div className="scrub__intro" ref={introRef}>
           <p className="eyebrow">Fashion · Electronics · Kitchenware · Daily Essentials</p>
           <h1>Things, considered.</h1>
-          <p className="scrub__cue">Scroll to take it apart</p>
+          <p className="scrub__cue">Scroll to explore</p>
         </div>
 
         {CHAPTERS.map((c, i) => (
@@ -162,7 +162,7 @@ export default function ScrubHero({ store, active }: Props) {
         ))}
 
         <div className="scrub__hud" aria-hidden="true">
-          <span className="scrub__label">Lumen One · illustrative concept render, not a listed product</span>
+          <span className="scrub__label">Imagery is illustrative</span>
           <span className="scrub__count" ref={countRef}>001 / {FRAME_COUNT}</span>
           <span className="scrub__track"><i ref={barRef} /></span>
         </div>
@@ -174,10 +174,10 @@ export default function ScrubHero({ store, active }: Props) {
 /** prefers-reduced-motion: one static hero frame and the chapters stacked as plain content. */
 export function StaticHero() {
   return (
-    <section className="static-hero" aria-label="Lumen One">
+    <section className="static-hero" aria-label="Lumen Market">
       <div className="static-hero__media">
-        <img src={frameUrl(HERO_FRAME)} width={FRAME_W} height={FRAME_H} alt="Lumen One concept smartwatch on a dark studio background" />
-        <span className="scrub__label">Lumen One · illustrative concept render, not a listed product</span>
+        <img src={frameUrl(HERO_FRAME)} width={FRAME_W} height={FRAME_H} alt="A tan leather tote on a dark studio table, illustrative product image" />
+        <span className="scrub__label">Imagery is illustrative</span>
       </div>
       <div className="static-hero__copy">
         <p className="eyebrow">Fashion · Electronics · Kitchenware · Daily Essentials</p>
